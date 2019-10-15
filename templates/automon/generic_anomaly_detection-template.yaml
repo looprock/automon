@@ -1,0 +1,14 @@
+name: "{{service_name}} {{corp_env}}: {{metric_name}} Anomaly Detected"
+type: "query alert"
+query: "avg(last_4h):anomalies(sum:{{metric_name}}{service:{{service_name}},env:{{corp_env}}}, 'basic', 2, direction='both', alert_window='last_15m', interval=60, count_default_zero='true') >= 1"
+message: "{{team}}"
+options:
+  notify_audit: False
+  require_full_window: False
+  thresholds:
+    critical: 1,
+    critical_recovery: 0
+tags:
+  - "service:{{service_name}}"
+  - "env:{{corp_env}}"
+  - "team:{{team_name}}"
