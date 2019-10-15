@@ -1,0 +1,17 @@
+name: "kube {{corp_env}}: {{namespace}} {{deployment}} Frequent Restarts"
+type: "query alert"
+query: "change(avg(last_5m),last_5m):avg:kubernetes.containers.restarts{env:{{corp_env}},kube_{{watchtype}}:{{deployment}},kube_namespace:{{namespace}}} > 5"
+message: "{{team}}"
+options:
+  notify_audit: False
+  require_full_window: True
+  thresholds:
+    critical: 5.0
+    warning: 4.0
+    critical_recovery: 1
+    warning_recovery: 1
+tags:
+  - "corp_env:kubernetes"
+  - "k8s_resource_type:pod"
+  - "corp_env:{{corp_env}}"
+  - "team:{{team_name}}"

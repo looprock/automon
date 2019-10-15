@@ -1,0 +1,17 @@
+name: "kube {{corp_env}}: {{namespace}} {{deployment}} CPU Exceeds Request"
+type: "query alert"
+query: "min(last_10m):max:kubernetes.cpu.usage.total{kube_namespace:{{namespace}},env:{{corp_env}},kube_deployment:{{deployment}}} by {container_name} / (max:kubernetes.cpu.requests{kube_namespace:{{namespace}},env:{{corp_env}},kube_deployment:{{deployment}}} by {container_name} * 1000000000) > 1.5"
+message: "@slack-{{team_notif}}"
+options:
+  notify_audit: False
+  require_full_window: True
+  thresholds:
+    critical: 1.5
+    warning: 1.25
+    critical_recovery: 1.25
+    warning_recovery: 1
+tags:
+  - "corp_env:kubernetes"
+  - "k8s_resource_type:pod"
+  - "corp_env:{{corp_env}}"
+  - "team:{{team_name}}"

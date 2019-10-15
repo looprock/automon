@@ -1,0 +1,15 @@
+name: "kube {{corp_env}}: {{namespace}} {{deployment}} mismatched ready pods vs. desired"
+type: "query alert"
+{% if 'deployment' == watchtype %}query: "max(last_15m):max:kubernetes_state.deployment.replicas_available{env:{{corp_env}},deployment:{{deployment}}} / max:kubernetes_state.deployment.replicas_desired{env:{{corp_env}},deployment:{{deployment}}} < .99" {% elif 'stateful_set' == watchtype %}query: "max(last_15m):max:kubernetes_state.statefulset.replicas_ready{env:{{corp_env}},statefulset:{{deployment}}} / max:kubernetes_state.statefulset.replicas_desired{env:{{corp_env}},statefulset:{{deployment}}} < .99"{% endif %}
+message: "{{team}}"
+options:
+  notify_audit: False
+  require_full_window: True
+  thresholds:
+    critical: .99
+    critical_recovery: 1
+tags:
+  - "corp_env:kubernetes"
+  - "k8s_resource_type:pod"
+  - "corp_env:{{corp_env}}"
+  - "team:{{team_name}}"
