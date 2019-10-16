@@ -134,10 +134,12 @@ def validate(chk_value, chk_list, msg):
         sys.exit(1)
 
 # TODO: get this list from datadog!
+# the team name is used to define where the alert is sent, so we need to make sure valid arguments are passed in
 err_msg = "** ERROR - you must specify a valid team!\n[new integrations must be created to add teams to this list.]\nValid teams:"
 validate(args.team, [
         'operations', 'panel', 'data-platform', 'platform', 'data-science-engineering', 'agent-tools', 'consumer'], err_msg)
 
+# poll the datadog API to find valid environment tags
 err_msg = "** ERROR - you must specify a valid environment!\nValid environments:"
 validate(args.environment, utils.return_environments(), err_msg)
 
