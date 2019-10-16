@@ -90,12 +90,9 @@ ci.corp.com/anomaly-monitor.[service]: [comma separated list of metrics or alias
 
 example: ci.corp.com/anomaly-monitor.my-server: trace.servlet.request.errors,grpc
 
-If you use one of the pre-defined ‘aliases’, that will be expanded to multiple metrics references, otherwise that metric will be used verbatim. Those metrics will be fed to a template to create an alerts with the query:
+If you use one of the pre-defined ‘aliases’, that will be expanded to multiple metrics references, otherwise that metric will be used verbatim. 
 
-```avg(last_4h):anomalies(sum:[metric_name]{service:[service_name],env:[environment]}, 'basic', 2, direction='both', alert_window='last_15m', interval=60, count_default_zero='true') >= 1
-```
-
-via the _generic_anomaly_detection-template.yaml_ template.
+Those metrics will be fed to the _generic_anomaly_detection-template.yaml_ template.
 
 ## Flow 
 ![alt text](https://github.com/looprock/automon/blob/master/Automon_flow.png "Automon Flow")
