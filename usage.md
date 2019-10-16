@@ -57,6 +57,8 @@ of the definition can be found here:
 https://docs.datadoghq.com/api/?lang=python#monitors
 
 ## Custom template example
+You can pass in the raw YAML without using any of the variables above or use the variables above in your template.
+
 ```name: "kube {{corp_env}}: {{namespace}} {{deployment}} Frequent Restarts"
 type: "query alert"
 query: "change(avg(last_5m),last_5m):avg:kubernetes.containers.restarts{env:{{corp_env}},kube_{{watchtype}}:{{deployment}},kube_namespace:{{namespace}}} > 5"
